@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example SAM template
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  ParamLambdaRoleArn:
+    Type: String
+  ParamEnv1:
+    Type: String
+  ParamEnv2:
+    Type: String
+Resources:
+  ExampleLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: example.handler
+      Role: !Ref ParamLambdaRoleArn
+      Runtime: python2.7
+      CodeUri: ../src
+      AutoPublishAlias: production
+      DeploymentPreference:
+        Type: AllAtOnce
+      Environment:
+        Variables:
+          ENV1: !Ref ParamEnv1
+          ENV2: !Ref ParamEnv2
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /example
+            Method: get
+
+Outputs:
+  OutExampleLambdaArn:
+    Value: !GetAtt ExampleLambda.Arn
+  OutExampleApiUrl:
+    Value: !Join [ '', [ 'https://', !Ref ServerlessRestApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]

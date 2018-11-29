@@ -1,0 +1,9 @@
+.DS_Store
+.idea/*
+*/tmp
+*/tmp/*
+*/environment.sh
+templates/sam_output.yaml
+*.pyc
+_notes.md
+_secret.md
